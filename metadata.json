@@ -1,0 +1,6 @@
+{
+  "name": "Netwonite",
+  "description": "Production team and task management application with role-based permissions, cross-team approvals, and glassmorphic UI.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
