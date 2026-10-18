@@ -33,6 +33,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         onNavigate={onNavigate}
         isCollapsed={isCollapsed}
         onToggleCollapse={() => setIsCollapsed(!isCollapsed)}
+        onOpenGuide={onOpenGuide}
       />
 
       {/* Main Content Area */}

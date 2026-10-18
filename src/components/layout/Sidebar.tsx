@@ -15,6 +15,7 @@ import {
   Trophy,
   BarChart3,
   ShieldCheck,
+  Compass,
 } from 'lucide-react';
 import { UserAvatar } from '../common/UserAvatar.tsx';
 
@@ -23,6 +24,7 @@ interface SidebarProps {
   onNavigate: (page: string, params?: any) => void;
   isCollapsed: boolean;
   onToggleCollapse: () => void;
+  onOpenGuide?: () => void;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
@@ -30,6 +32,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onNavigate,
   isCollapsed,
   onToggleCollapse,
+  onOpenGuide,
 }) => {
   const { user, isAdmin, isViewer, teamsLeading } = useAuth();
   const isLeader = teamsLeading.length > 0;
@@ -271,6 +274,24 @@ export const Sidebar: React.FC<SidebarProps> = ({
           </div>
         </div>
       </div>
+
+      {/* Quick Guide & Help Launcher */}
+      {onOpenGuide && (
+        <div className="px-3 pb-2">
+          <button
+            onClick={onOpenGuide}
+            className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold tracking-tight transition-all duration-200 cursor-pointer bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-400/30 text-emerald-300 hover:text-white shadow-xs group ${
+              isCollapsed ? 'justify-center px-0' : ''
+            }`}
+            title="Open Interactive User Guide & Tour"
+          >
+            <Compass className="h-4 w-4 shrink-0 text-emerald-400 group-hover:rotate-45 transition-transform duration-300" />
+            {!isCollapsed && (
+              <span className="truncate flex-1 text-left">Quick Guide & Tour</span>
+            )}
+          </button>
+        </div>
+      )}
 
       {/* Bottom Profile Info */}
       <div className="p-3 border-t border-white/10 bg-black/20">

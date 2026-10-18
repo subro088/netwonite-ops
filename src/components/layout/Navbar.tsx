@@ -143,6 +143,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, onOpenGuide }) => {
                         className={`text-[10px] px-1.5 py-0.5 rounded font-mono uppercase tracking-wider shrink-0 ${
                           p.badge === 'Admin'
                             ? 'bg-amber-100 text-amber-800 border border-amber-200'
+                            : p.badge === 'Analyst'
+                            ? 'bg-purple-100 text-purple-800 border border-purple-200 font-semibold'
                             : p.badge === 'Lead'
                             ? 'bg-teal-100 text-teal-800 border border-teal-200'
                             : 'bg-slate-100 text-slate-600 border border-slate-200'
