@@ -10,6 +10,7 @@ interface AuthContextType {
   isLoading: boolean;
   isAdmin: boolean;
   isLeader: boolean;
+  isViewer: boolean;
   login: (email: string, password?: string) => Promise<void>;
   switchPersona: (email: string) => Promise<void>;
   logout: () => void;
@@ -99,6 +100,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const isAdmin = user?.role === 'admin';
   const isLeader = teamsLeading.length > 0;
+  const isViewer = user?.role === 'viewer';
 
   return (
     <AuthContext.Provider
@@ -110,6 +112,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         isLoading,
         isAdmin,
         isLeader,
+        isViewer,
         login,
         switchPersona,
         logout,

@@ -25,13 +25,16 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onOpenGuide }) => {
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [demoEmployees, setDemoEmployees] = useState<DemoUserItem[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<'all' | 'leaders' | 'members'>('all');
+  const [demoAnalysts, setDemoAnalysts] = useState<DemoUserItem[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<'all' | 'leaders' | 'members' | 'analysts'>('all');
 
   useEffect(() => {
     api.getDemoUsers()
       .then(res => {
         const emps = res.users.filter(u => u.role === 'employee');
+        const analysts = res.users.filter(u => u.role === 'viewer');
         setDemoEmployees(emps);
+        setDemoAnalysts(analysts);
       })
       .catch(() => {
         const fallback: DemoUserItem[] = [];
@@ -41,11 +44,18 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onOpenGuide }) => {
             name: `Employee ${i}`,
             email: `employ${i}@gmail.com`,
             role: 'employee',
-            teamsLeadingCount: [1, 6, 11, 16].includes(i) ? 1 : 0,
+            teamsLeadingCount: [1, 6].includes(i) ? 1 : 0,
             teamsMemberOfCount: 1,
           });
         }
         setDemoEmployees(fallback);
+        setDemoAnalysts([
+          { id: 'usr-analyst-1', name: 'Sophia Martinez', email: 'analyst1@gmail.com', role: 'viewer', title: 'Lead Operations Analyst', department: 'Operations Intelligence', teamsLeadingCount: 0, teamsMemberOfCount: 0 },
+          { id: 'usr-analyst-2', name: 'Daniel Cooper', email: 'analyst2@gmail.com', role: 'viewer', title: 'Workflow Intelligence Analyst', department: 'Workflow Audit', teamsLeadingCount: 0, teamsMemberOfCount: 0 },
+          { id: 'usr-analyst-3', name: 'Fatima Al-Mansoor', email: 'analyst3@gmail.com', role: 'viewer', title: 'Compliance & Audit Analyst', department: 'Governance & Compliance', teamsLeadingCount: 0, teamsMemberOfCount: 0 },
+          { id: 'usr-analyst-4', name: 'Rohan Verma', email: 'analyst4@gmail.com', role: 'viewer', title: 'Sprint Velocity Analyst', department: 'Engineering Velocity', teamsLeadingCount: 0, teamsMemberOfCount: 0 },
+          { id: 'usr-analyst-5', name: 'Zoe Andersson', email: 'analyst5@gmail.com', role: 'viewer', title: 'Cross-Team Productivity Analyst', department: 'Cross-Team Intelligence', teamsLeadingCount: 0, teamsMemberOfCount: 0 },
+        ]);
       });
   }, []);
 
@@ -76,11 +86,12 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onOpenGuide }) => {
     }
   };
 
-  const filteredEmployees = demoEmployees.filter(emp => {
-    if (selectedCategory === 'leaders') return emp.teamsLeadingCount > 0;
-    if (selectedCategory === 'members') return emp.teamsLeadingCount === 0;
-    return true;
-  });
+  const filteredUsersToDisplay = () => {
+    if (selectedCategory === 'analysts') return demoAnalysts;
+    if (selectedCategory === 'leaders') return demoEmployees.filter(e => e.teamsLeadingCount > 0);
+    if (selectedCategory === 'members') return demoEmployees.filter(e => e.teamsLeadingCount === 0);
+    return demoEmployees;
+  };
 
   return (
     <div className="relative min-h-screen w-full flex flex-col justify-center items-center p-3 sm:p-6 overflow-hidden bg-gradient-to-br from-zinc-300 via-neutral-200 to-zinc-400 font-sans select-none">
@@ -138,8 +149,8 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onOpenGuide }) => {
 
         {/* 3 Sections in Black and White Glass Combination */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 my-4 flex-1 items-stretch">
-          {/* SECTION 1: Admin Access Card */}
-          <div className="liquid-sheen-sweep lg:col-span-3 rounded-2xl bg-black/90 text-white border border-white/20 p-5 flex flex-col justify-between backdrop-blur-2xl shadow-[0_15px_35px_-10px_rgba(0,0,0,0.45),0_0_0_1px_rgba(255,255,255,0.15)] hover:-translate-y-2 hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.7),0_0_25px_rgba(255,255,255,0.2)] hover:border-white/50 transition-all duration-300 ease-out group">
+          {/* SECTION 1: Admin & Analyst Access Card */}
+          <div className="liquid-sheen-sweep lg:col-span-3 rounded-2xl bg-black/90 text-white border border-white/20 p-5 flex flex-col justify-between backdrop-blur-2xl shadow-[0_15px_35px_-10px_rgba(0,0,0,0.45),0_0_0_1px_rgba(255,255,255,0.15)] hover:-translate-y-1 hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.7),0_0_25px_rgba(255,255,255,0.2)] hover:border-white/50 transition-all duration-300 ease-out group">
             <div className="pointer-events-none absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent" />
             <div>
               <div className="flex items-center gap-2 mb-2 text-white">
@@ -147,44 +158,65 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onOpenGuide }) => {
                   <Shield className="h-4 w-4 text-inherit" />
                 </div>
                 <h2 className="text-xs font-bold uppercase tracking-wider text-neutral-100">
-                  1. Admin Access
+                  1. Governance & Analyst
                 </h2>
               </div>
               <p className="text-xs text-neutral-400 leading-relaxed">
-                Full administrative privileges. Create & manage squads, assign leaders, oversee cross-team workflows.
+                Full administrative privileges or dedicated read-only intelligence and claim audit access.
               </p>
-              <div className="mt-4 p-3 rounded-xl bg-neutral-900/90 border border-white/15 shadow-inner hover:border-white/30 transition-colors">
-                <p className="text-[10px] text-neutral-400 uppercase tracking-wider font-semibold">Pre-Configured</p>
+              
+              <div className="mt-3 p-2.5 rounded-xl bg-neutral-900/90 border border-white/15 shadow-inner">
+                <p className="text-[10px] text-neutral-400 uppercase tracking-wider font-semibold">Administrator</p>
                 <p className="text-xs font-bold text-white mt-0.5">admin@netwonite.com</p>
-                <p className="text-[11px] text-neutral-300 mt-1 font-medium">Role: System Administrator</p>
+                <button
+                  type="button"
+                  onClick={() => handleQuickLogin('admin@netwonite.com')}
+                  disabled={isSubmitting || authLoading}
+                  className="mt-2 w-full py-1.5 px-3 rounded-lg bg-white hover:bg-neutral-200 text-black text-[11px] font-bold uppercase tracking-wider shadow-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50"
+                >
+                  <Shield className="h-3 w-3 text-black" />
+                  <span>Login as Admin</span>
+                </button>
+              </div>
+
+              <div className="mt-3 p-2.5 rounded-xl bg-cyan-950/40 border border-cyan-500/30 shadow-inner">
+                <div className="flex items-center justify-between">
+                  <p className="text-[10px] text-cyan-300 uppercase tracking-wider font-semibold">Dedicated Analyst</p>
+                  <span className="text-[9px] px-1 rounded bg-cyan-500/20 text-cyan-300 font-mono">Immutable</span>
+                </div>
+                <p className="text-xs font-bold text-white mt-0.5">analyst1@gmail.com</p>
+                <p className="text-[10px] text-cyan-400 font-medium truncate">Sophia Martinez • Lead Ops Analyst</p>
+                <button
+                  type="button"
+                  onClick={() => handleQuickLogin('analyst1@gmail.com')}
+                  disabled={isSubmitting || authLoading}
+                  className="mt-2 w-full py-1.5 px-3 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-slate-950 text-[11px] font-bold uppercase tracking-wider shadow-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50"
+                >
+                  <span>1-Click Viewer Analyst</span>
+                </button>
               </div>
             </div>
 
-            <button
-              type="button"
-              onClick={() => handleQuickLogin('admin@netwonite.com')}
-              disabled={isSubmitting || authLoading}
-              className="mt-4 w-full py-2.5 px-4 rounded-xl bg-white hover:bg-neutral-200 text-black text-xs font-bold uppercase tracking-wider shadow-[0_10px_20px_-5px_rgba(255,255,255,0.2)] hover:shadow-[0_15px_30px_-5px_rgba(255,255,255,0.35)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
-            >
-              <Shield className="h-3.5 w-3.5 text-black" />
-              <span>Login as Admin</span>
-            </button>
+            <div className="pt-2 text-[10px] text-neutral-400 border-t border-white/10 mt-3 flex items-center justify-between">
+              <span>Password: <strong>123456</strong></span>
+              <span>5 Dedicated Analysts</span>
+            </div>
           </div>
 
-          {/* SECTION 2: Employee Personas Card */}
-          <div className="liquid-sheen-sweep lg:col-span-5 rounded-2xl bg-white/85 text-neutral-900 border border-white/90 p-5 flex flex-col justify-between backdrop-blur-2xl shadow-[0_15px_35px_-10px_rgba(0,0,0,0.12),0_0_0_1px_rgba(255,255,255,0.8)] hover:-translate-y-2 hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.25),0_0_30px_rgba(255,255,255,0.9)] hover:border-neutral-400 transition-all duration-300 ease-out group">
+          {/* SECTION 2: Employee & Analyst Personas Card */}
+          <div className="liquid-sheen-sweep lg:col-span-5 rounded-2xl bg-white/85 text-neutral-900 border border-white/90 p-5 flex flex-col justify-between backdrop-blur-2xl shadow-[0_15px_35px_-10px_rgba(0,0,0,0.12),0_0_0_1px_rgba(255,255,255,0.8)] hover:-translate-y-1 hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.25),0_0_30px_rgba(255,255,255,0.9)] hover:border-neutral-400 transition-all duration-300 ease-out group">
             <div className="pointer-events-none absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-black/10 to-transparent" />
             <div>
-              <div className="flex items-center justify-between mb-2">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
                 <div className="flex items-center gap-2 text-black">
                   <div className="p-1.5 rounded-lg bg-black text-white group-hover:scale-110 transition-transform duration-300">
                     <Users className="h-4 w-4" />
                   </div>
                   <h2 className="text-xs font-bold uppercase tracking-wider text-black">
-                    2. Employee Personas
+                    2. Workspace Personas
                   </h2>
                 </div>
-                <div className="flex items-center gap-1 text-[10px]">
+                <div className="flex items-center gap-1 text-[10px] flex-wrap">
                   <button
                     onClick={() => setSelectedCategory('all')}
                     className={`px-2 py-0.5 rounded-md cursor-pointer transition-all duration-200 hover:scale-105 ${
@@ -193,7 +225,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onOpenGuide }) => {
                         : 'text-neutral-600 hover:text-black bg-neutral-100 hover:bg-neutral-200'
                     }`}
                   >
-                    All (20)
+                    All ({demoEmployees.length})
                   </button>
                   <button
                     onClick={() => setSelectedCategory('leaders')}
@@ -203,7 +235,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onOpenGuide }) => {
                         : 'text-neutral-600 hover:text-black bg-neutral-100 hover:bg-neutral-200'
                     }`}
                   >
-                    Leaders (4)
+                    Leaders ({demoEmployees.filter(e => e.teamsLeadingCount > 0).length || 2})
                   </button>
                   <button
                     onClick={() => setSelectedCategory('members')}
@@ -213,28 +245,48 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onOpenGuide }) => {
                         : 'text-neutral-600 hover:text-black bg-neutral-100 hover:bg-neutral-200'
                     }`}
                   >
-                    Members (16)
+                    Members ({demoEmployees.filter(e => e.teamsLeadingCount === 0).length || 18})
+                  </button>
+                  <button
+                    onClick={() => setSelectedCategory('analysts')}
+                    className={`px-2 py-0.5 rounded-md cursor-pointer transition-all duration-200 hover:scale-105 ${
+                      selectedCategory === 'analysts'
+                        ? 'bg-cyan-600 text-white font-bold shadow-xs'
+                        : 'text-cyan-800 hover:text-cyan-900 bg-cyan-100 hover:bg-cyan-200 font-semibold'
+                    }`}
+                  >
+                    Analysts (5)
                   </button>
                 </div>
               </div>
               <p className="text-[11px] text-neutral-600 mb-2 font-medium">
-                Click any employee persona to sign in instantaneously (employ1 through employ20):
+                {selectedCategory === 'analysts'
+                  ? 'Dedicated Viewer Analysts (Immutable governance role for claim & workflow audits):'
+                  : 'Click any employee persona to sign in instantaneously (employ1 through employ20):'}
               </p>
 
               <div className="grid grid-cols-2 gap-1.5 max-h-48 sm:max-h-56 overflow-y-auto pr-1">
-                {filteredEmployees.map(emp => (
+                {filteredUsersToDisplay().map(item => (
                   <button
-                    key={emp.id}
+                    key={item.id}
                     type="button"
-                    onClick={() => handleQuickLogin(emp.email)}
+                    onClick={() => handleQuickLogin(item.email)}
                     disabled={isSubmitting || authLoading}
-                    className="p-2 rounded-xl bg-white hover:bg-neutral-900 hover:text-white border border-neutral-200/90 hover:border-black text-left transition-all duration-200 ease-out hover:-translate-y-0.5 hover:scale-[1.02] shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_20px_-4px_rgba(0,0,0,0.25)] group/item cursor-pointer"
+                    className={`p-2 rounded-xl text-left transition-all duration-200 ease-out hover:-translate-y-0.5 hover:scale-[1.02] shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_20px_-4px_rgba(0,0,0,0.25)] group/item cursor-pointer border ${
+                      item.role === 'viewer'
+                        ? 'bg-cyan-50/70 hover:bg-cyan-900 hover:text-white border-cyan-200 hover:border-cyan-500'
+                        : 'bg-white hover:bg-neutral-900 hover:text-white border-neutral-200/90 hover:border-black'
+                    }`}
                   >
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-bold text-neutral-900 group-hover/item:text-white truncate">
-                        {emp.name}
+                        {item.name}
                       </span>
-                      {emp.teamsLeadingCount > 0 ? (
+                      {item.role === 'viewer' ? (
+                        <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-cyan-700 text-white group-hover/item:bg-white group-hover/item:text-cyan-900 uppercase transition-colors">
+                          Analyst
+                        </span>
+                      ) : item.teamsLeadingCount > 0 ? (
                         <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-black text-white group-hover/item:bg-white group-hover/item:text-black uppercase transition-colors">
                           Lead
                         </span>
@@ -245,8 +297,13 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onOpenGuide }) => {
                       )}
                     </div>
                     <div className="text-[10px] text-neutral-500 group-hover/item:text-neutral-300 truncate mt-0.5">
-                      {emp.email}
+                      {item.email}
                     </div>
+                    {item.title && (
+                      <div className="text-[9px] text-neutral-400 group-hover/item:text-neutral-300 truncate">
+                        {item.title}
+                      </div>
+                    )}
                   </button>
                 ))}
               </div>

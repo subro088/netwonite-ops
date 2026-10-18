@@ -89,6 +89,16 @@ export const UserAvatar: React.FC<UserAvatarProps> = ({
         </span>
       );
     }
+    if (normalizedRole === 'viewer' || normalizedRole === 'analyst') {
+      return (
+        <span
+          className={`absolute ${badgeClasses} rounded-full bg-cyan-500 text-white ring-2 ring-white shadow-md flex items-center justify-center font-bold`}
+          title="Viewer Analyst Badge"
+        >
+          <Sparkles className="w-full h-full" />
+        </span>
+      );
+    }
     return (
       <span
         className={`absolute ${badgeClasses} rounded-full bg-slate-700 text-white ring-2 ring-white shadow-md flex items-center justify-center`}

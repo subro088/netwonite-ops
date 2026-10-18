@@ -30,7 +30,7 @@ const EMPLOYEE_NAMES = [
   { name: 'Chloe Dubois', dept: 'Auth & Identity', title: 'Systems Architect' },
   { name: 'Liam O Connor', dept: 'Network Security', title: 'Network Operations Engineer' },
   { name: 'Aisha Abubakar', dept: 'Platform Governance', title: 'Compliance Officer' },
-  { name: 'Noah Becker', dept: 'Data & Intelligence', title: 'Machine Learning Lead' },
+  { name: 'Noah Becker', dept: 'Data & Intelligence', title: 'Machine Learning Specialist' },
   { name: 'Mia Takahashi', dept: 'Data Science', title: 'Data Analyst' },
   { name: 'Ethan Wright', dept: 'MLOps', title: 'ML Infrastructure Engineer' },
   { name: 'Olivia Rossi', dept: 'Growth Engineering', title: 'Product Analytics Lead' },
@@ -54,7 +54,7 @@ class NetwoniteDatabase {
   }
 
   public seed() {
-    // 1. Admin
+    // 1. Admin - untouched
     const admin: StoredUser = {
       id: 'usr-admin',
       name: 'System Administrator',
@@ -91,7 +91,7 @@ class NetwoniteDatabase {
       'https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?w=300&auto=format&fit=crop&q=80',
     ];
 
-    // 2. 20 Demo Employees
+    // 2. 20 Demo Employees - Alex Chen (emp 1) & David Kim (emp 6) are the ONLY leads
     const employees: StoredUser[] = [];
     for (let i = 1; i <= 20; i++) {
       const info = EMPLOYEE_NAMES[i - 1];
@@ -119,14 +119,79 @@ class NetwoniteDatabase {
       });
     }
 
-    this.users = [admin, ...employees];
+    // 2.5 Dedicated 5 Viewer Analysis Users (System role, not created by Admin)
+    const analysts: StoredUser[] = [
+      {
+        id: 'usr-analyst-1',
+        name: 'Sophia Martinez',
+        email: 'analyst1@gmail.com',
+        role: 'viewer',
+        avatar: 'https://images.unsplash.com/photo-1573496799652-408c2ac9fe98?w=300&auto=format&fit=crop&q=80',
+        department: 'Operations Intelligence',
+        title: 'Lead Operations Analyst',
+        createdAt: '2026-01-02T08:00:00.000Z',
+        passwordHash: HASHED_PASSWORD_123456,
+        customBadges: [],
+      },
+      {
+        id: 'usr-analyst-2',
+        name: 'Daniel Cooper',
+        email: 'analyst2@gmail.com',
+        role: 'viewer',
+        avatar: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=300&auto=format&fit=crop&q=80',
+        department: 'Workflow Audit',
+        title: 'Workflow Intelligence Analyst',
+        createdAt: '2026-01-02T08:30:00.000Z',
+        passwordHash: HASHED_PASSWORD_123456,
+        customBadges: [],
+      },
+      {
+        id: 'usr-analyst-3',
+        name: 'Fatima Al-Mansoor',
+        email: 'analyst3@gmail.com',
+        role: 'viewer',
+        avatar: 'https://images.unsplash.com/photo-1580894732444-8ecded7900cd?w=300&auto=format&fit=crop&q=80',
+        department: 'Governance & Compliance',
+        title: 'Compliance & Audit Analyst',
+        createdAt: '2026-01-02T09:00:00.000Z',
+        passwordHash: HASHED_PASSWORD_123456,
+        customBadges: [],
+      },
+      {
+        id: 'usr-analyst-4',
+        name: 'Rohan Verma',
+        email: 'analyst4@gmail.com',
+        role: 'viewer',
+        avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=300&auto=format&fit=crop&q=80',
+        department: 'Engineering Velocity',
+        title: 'Sprint Velocity Analyst',
+        createdAt: '2026-01-02T09:30:00.000Z',
+        passwordHash: HASHED_PASSWORD_123456,
+        customBadges: [],
+      },
+      {
+        id: 'usr-analyst-5',
+        name: 'Zoe Andersson',
+        email: 'analyst5@gmail.com',
+        role: 'viewer',
+        avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=300&auto=format&fit=crop&q=80',
+        department: 'Cross-Team Intelligence',
+        title: 'Cross-Team Productivity Analyst',
+        createdAt: '2026-01-02T10:00:00.000Z',
+        passwordHash: HASHED_PASSWORD_123456,
+        customBadges: [],
+      },
+    ];
 
-    // 3. Teams: Team Rock, Team Paper, Team Nexus, Team Alpha
+    this.users = [admin, ...analysts, ...employees];
+
+    // 3. Teams: Only Alex Chen (usr-emp-1) and David Kim (usr-emp-6) are Team Leads
+    // Team Rock: Lead Alex Chen
     const teamRock: Team = {
       id: 'team-rock',
       name: 'Team Rock',
       description: 'Core infrastructure, microservices, containerization, and site reliability engineering.',
-      leadId: 'usr-emp-1',
+      leadId: 'usr-emp-1', // Alex Chen
       lead: this.getUserById('usr-emp-1')!,
       memberIds: ['usr-emp-2', 'usr-emp-3', 'usr-emp-4', 'usr-emp-5'],
       members: [],
@@ -134,11 +199,12 @@ class NetwoniteDatabase {
     };
     teamRock.members = teamRock.memberIds.map(id => this.getUserById(id)!);
 
+    // Team Paper: Lead David Kim
     const teamPaper: Team = {
       id: 'team-paper',
       name: 'Team Paper',
       description: 'Product design, frontend web application interfaces, and customer experience.',
-      leadId: 'usr-emp-6',
+      leadId: 'usr-emp-6', // David Kim
       lead: this.getUserById('usr-emp-6')!,
       memberIds: ['usr-emp-7', 'usr-emp-8', 'usr-emp-9', 'usr-emp-10'],
       members: [],
@@ -146,25 +212,27 @@ class NetwoniteDatabase {
     };
     teamPaper.members = teamPaper.memberIds.map(id => this.getUserById(id)!);
 
+    // Team Nexus: Lead Alex Chen (Emily Zhao is a member)
     const teamNexus: Team = {
       id: 'team-nexus',
       name: 'Team Nexus',
       description: 'Zero-trust architecture, identity management, OAuth2 services, and cyber compliance.',
-      leadId: 'usr-emp-11',
-      lead: this.getUserById('usr-emp-11')!,
-      memberIds: ['usr-emp-12', 'usr-emp-13', 'usr-emp-14', 'usr-emp-15', 'usr-emp-2'],
+      leadId: 'usr-emp-1', // Alex Chen
+      lead: this.getUserById('usr-emp-1')!,
+      memberIds: ['usr-emp-11', 'usr-emp-12', 'usr-emp-13', 'usr-emp-14', 'usr-emp-15', 'usr-emp-2'],
       members: [],
       createdAt: '2026-01-12T10:00:00.000Z',
     };
     teamNexus.members = teamNexus.memberIds.map(id => this.getUserById(id)!);
 
+    // Team Alpha: Lead David Kim (Noah Becker is a member)
     const teamAlpha: Team = {
       id: 'team-alpha',
       name: 'Team Alpha',
       description: 'AI model inference pipelines, big data analytics, and real-time streaming metrics.',
-      leadId: 'usr-emp-16',
-      lead: this.getUserById('usr-emp-16')!,
-      memberIds: ['usr-emp-17', 'usr-emp-18', 'usr-emp-19', 'usr-emp-20'],
+      leadId: 'usr-emp-6', // David Kim
+      lead: this.getUserById('usr-emp-6')!,
+      memberIds: ['usr-emp-16', 'usr-emp-17', 'usr-emp-18', 'usr-emp-19', 'usr-emp-20'],
       members: [],
       createdAt: '2026-01-13T10:00:00.000Z',
     };
@@ -181,7 +249,7 @@ class NetwoniteDatabase {
         priority: 'High',
         status: 'New',
         dueDate: '2026-11-01',
-        creatorId: 'usr-emp-1',
+        creatorId: 'usr-emp-1', // Alex Chen
         creator: this.getUserById('usr-emp-1')!,
         assigneeId: null,
         assignee: null,
@@ -200,7 +268,7 @@ class NetwoniteDatabase {
         priority: 'Medium',
         status: 'In Progress',
         dueDate: '2026-10-25',
-        creatorId: 'usr-emp-1',
+        creatorId: 'usr-emp-1', // Alex Chen
         creator: this.getUserById('usr-emp-1')!,
         assigneeId: 'usr-emp-2',
         assignee: this.getUserById('usr-emp-2')!,
@@ -219,7 +287,7 @@ class NetwoniteDatabase {
         priority: 'Urgent',
         status: 'Awaiting Approval',
         dueDate: '2026-10-28',
-        creatorId: 'usr-emp-1',
+        creatorId: 'usr-emp-1', // Alex Chen -> David Kim (Team Paper)
         creator: this.getUserById('usr-emp-1')!,
         assigneeId: null,
         assignee: null,
@@ -238,7 +306,7 @@ class NetwoniteDatabase {
         priority: 'High',
         status: 'Awaiting Approval',
         dueDate: '2026-10-20',
-        creatorId: 'usr-emp-6',
+        creatorId: 'usr-emp-6', // David Kim
         creator: this.getUserById('usr-emp-6')!,
         assigneeId: 'usr-emp-7',
         assignee: this.getUserById('usr-emp-7')!,
@@ -257,10 +325,10 @@ class NetwoniteDatabase {
         priority: 'High',
         status: 'Resolved',
         dueDate: '2026-10-14',
-        creatorId: 'usr-emp-11',
-        creator: this.getUserById('usr-emp-11')!,
-        assigneeId: 'usr-emp-12',
-        assignee: this.getUserById('usr-emp-12')!,
+        creatorId: 'usr-emp-1', // Alex Chen (Nexus Lead)
+        creator: this.getUserById('usr-emp-1')!,
+        assigneeId: 'usr-emp-11', // Emily Zhao (Nexus Member)
+        assignee: this.getUserById('usr-emp-11')!,
         sourceTeamId: 'team-nexus',
         sourceTeam: teamNexus,
         destinationTeamId: null,
@@ -268,7 +336,7 @@ class NetwoniteDatabase {
         assignmentMethod: 'specific_member',
         createdAt: '2026-10-08T09:00:00.000Z',
         updatedAt: '2026-10-14T17:30:00.000Z',
-        reviewNotes: 'Verified cryptographically. Excellent work on zero-trust token exchange.',
+        reviewNotes: 'Verified cryptographically. Excellent work on zero-trust token exchange by Emily.',
       },
       {
         id: 'tsk-106',
@@ -277,8 +345,8 @@ class NetwoniteDatabase {
         priority: 'Low',
         status: 'Closed',
         dueDate: '2026-10-10',
-        creatorId: 'usr-emp-11',
-        creator: this.getUserById('usr-emp-11')!,
+        creatorId: 'usr-emp-1', // Alex Chen
+        creator: this.getUserById('usr-emp-1')!,
         assigneeId: 'usr-emp-13',
         assignee: this.getUserById('usr-emp-13')!,
         sourceTeamId: 'team-nexus',
@@ -297,10 +365,10 @@ class NetwoniteDatabase {
         priority: 'High',
         status: 'Assigned',
         dueDate: '2026-10-30',
-        creatorId: 'usr-emp-16',
-        creator: this.getUserById('usr-emp-16')!,
-        assigneeId: 'usr-emp-17',
-        assignee: this.getUserById('usr-emp-17')!,
+        creatorId: 'usr-emp-6', // David Kim (Alpha Lead)
+        creator: this.getUserById('usr-emp-6')!,
+        assigneeId: 'usr-emp-16', // Noah Becker (Alpha Member)
+        assignee: this.getUserById('usr-emp-16')!,
         sourceTeamId: 'team-alpha',
         sourceTeam: teamAlpha,
         destinationTeamId: null,
@@ -311,17 +379,17 @@ class NetwoniteDatabase {
       },
       {
         id: 'tsk-108',
-        title: 'Cross-team: Team Alpha requests frontend charts from Team Paper',
-        description: 'Provide animated SVG/canvas heatmaps for real-time model throughput monitoring.',
+        title: 'Cross-team: Team Nexus requests UI validation suite from Team Paper',
+        description: 'Provide automated accessibility audit suite for zero-trust login portals.',
         priority: 'Medium',
         status: 'New',
         dueDate: '2026-11-05',
-        creatorId: 'usr-emp-16',
-        creator: this.getUserById('usr-emp-16')!,
+        creatorId: 'usr-emp-1', // Alex Chen
+        creator: this.getUserById('usr-emp-1')!,
         assigneeId: null,
         assignee: null,
-        sourceTeamId: 'team-alpha',
-        sourceTeam: teamAlpha,
+        sourceTeamId: 'team-nexus',
+        sourceTeam: teamNexus,
         destinationTeamId: 'team-paper',
         destinationTeam: teamPaper,
         assignmentMethod: 'another_team',
@@ -335,8 +403,8 @@ class NetwoniteDatabase {
         priority: 'High',
         status: 'Resolved',
         dueDate: '2026-10-16',
-        creatorId: 'usr-emp-16',
-        creator: this.getUserById('usr-emp-16')!,
+        creatorId: 'usr-emp-6', // David Kim
+        creator: this.getUserById('usr-emp-6')!,
         assigneeId: 'usr-emp-18',
         assignee: this.getUserById('usr-emp-18')!,
         sourceTeamId: 'team-alpha',
@@ -355,7 +423,7 @@ class NetwoniteDatabase {
         priority: 'Urgent',
         status: 'Resolved',
         dueDate: '2026-10-15',
-        creatorId: 'usr-emp-1',
+        creatorId: 'usr-emp-1', // Alex Chen
         creator: this.getUserById('usr-emp-1')!,
         assigneeId: 'usr-emp-4',
         assignee: this.getUserById('usr-emp-4')!,
@@ -380,9 +448,9 @@ class NetwoniteDatabase {
         sourceTeam: teamRock,
         destinationTeamId: 'team-paper',
         destinationTeam: teamPaper,
-        requestorId: 'usr-emp-1',
+        requestorId: 'usr-emp-1', // Alex Chen
         requestor: this.getUserById('usr-emp-1')!,
-        recipientLeaderId: 'usr-emp-6',
+        recipientLeaderId: 'usr-emp-6', // David Kim (Paper Lead)
         recipientLeader: this.getUserById('usr-emp-6')!,
         status: 'Pending',
         createdAt: '2026-10-17T08:15:00.000Z',
@@ -391,13 +459,13 @@ class NetwoniteDatabase {
         id: 'appr-2',
         taskId: 'tsk-108',
         task: this.tasks.find(t => t.id === 'tsk-108')!,
-        sourceTeamId: 'team-alpha',
-        sourceTeam: teamAlpha,
+        sourceTeamId: 'team-nexus',
+        sourceTeam: teamNexus,
         destinationTeamId: 'team-paper',
         destinationTeam: teamPaper,
-        requestorId: 'usr-emp-16',
-        requestor: this.getUserById('usr-emp-16')!,
-        recipientLeaderId: 'usr-emp-6',
+        requestorId: 'usr-emp-1', // Alex Chen
+        requestor: this.getUserById('usr-emp-1')!,
+        recipientLeaderId: 'usr-emp-6', // David Kim
         recipientLeader: this.getUserById('usr-emp-6')!,
         status: 'Pending',
         createdAt: '2026-10-17T11:00:00.000Z',
@@ -411,24 +479,24 @@ class NetwoniteDatabase {
           description: 'Request for raw SQL dumps to be piped to unverified vendor storage.',
           priority: 'Urgent',
           status: 'Closed',
-          creatorId: 'usr-emp-1',
-          creator: this.getUserById('usr-emp-1')!,
-          sourceTeamId: 'team-rock',
-          sourceTeam: teamRock,
+          creatorId: 'usr-emp-6',
+          creator: this.getUserById('usr-emp-6')!,
+          sourceTeamId: 'team-paper',
+          sourceTeam: teamPaper,
           destinationTeamId: 'team-nexus',
           destinationTeam: teamNexus,
           assignmentMethod: 'another_team',
           createdAt: '2026-10-10T10:00:00.000Z',
           updatedAt: '2026-10-11T12:00:00.000Z',
         },
-        sourceTeamId: 'team-rock',
-        sourceTeam: teamRock,
+        sourceTeamId: 'team-paper',
+        sourceTeam: teamPaper,
         destinationTeamId: 'team-nexus',
         destinationTeam: teamNexus,
-        requestorId: 'usr-emp-1',
-        requestor: this.getUserById('usr-emp-1')!,
-        recipientLeaderId: 'usr-emp-11',
-        recipientLeader: this.getUserById('usr-emp-11')!,
+        requestorId: 'usr-emp-6', // David Kim
+        requestor: this.getUserById('usr-emp-6')!,
+        recipientLeaderId: 'usr-emp-1', // Alex Chen (Nexus Lead)
+        recipientLeader: this.getUserById('usr-emp-1')!,
         status: 'Rejected',
         rejectionReason: 'Violates compliance policy Sec-402: Raw database exports to external 3rd-party S3 buckets require audited encryption keys and VP approval.',
         createdAt: '2026-10-10T10:00:00.000Z',
@@ -531,10 +599,10 @@ class NetwoniteDatabase {
         id: 'act-7',
         taskId: 'tsk-105',
         taskTitle: 'Refactor OAuth token rotation and CSRF protection headers',
-        actorId: 'usr-emp-11',
-        actor: this.getUserById('usr-emp-11')!,
+        actorId: 'usr-emp-1',
+        actor: this.getUserById('usr-emp-1')!,
         action: 'task_resolved',
-        details: 'Emily Zhao approved submission and marked task Resolved.',
+        details: 'Alex Chen approved submission from Emily Zhao and marked task Resolved.',
         sourceTeamName: 'Team Nexus',
         createdAt: '2026-10-14T17:30:00.000Z',
       },
@@ -542,11 +610,11 @@ class NetwoniteDatabase {
         id: 'act-8',
         taskId: 'tsk-old-rej',
         taskTitle: 'Direct database replica dump to external AWS S3 bucket',
-        actorId: 'usr-emp-11',
-        actor: this.getUserById('usr-emp-11')!,
+        actorId: 'usr-emp-1',
+        actor: this.getUserById('usr-emp-1')!,
         action: 'cross_team_rejected',
-        details: 'Rejected cross-team request from Team Rock: Violates compliance policy Sec-402.',
-        sourceTeamName: 'Team Rock',
+        details: 'Rejected cross-team request from Team Paper: Violates compliance policy Sec-402.',
+        sourceTeamName: 'Team Paper',
         destinationTeamName: 'Team Nexus',
         createdAt: '2026-10-11T12:00:00.000Z',
       },
@@ -568,7 +636,6 @@ class NetwoniteDatabase {
     const user = this.users.find(u => u.id === id);
     if (!user) return undefined;
     user.avatar = avatar;
-    // Synchronize avatar reference across teams and tasks
     for (const team of this.teams) {
       if (team.lead && team.lead.id === id) {
         team.lead.avatar = avatar;

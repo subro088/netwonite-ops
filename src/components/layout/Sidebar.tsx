@@ -13,6 +13,8 @@ import {
   ChevronLeft,
   ChevronRight,
   Trophy,
+  BarChart3,
+  ShieldCheck,
 } from 'lucide-react';
 import { UserAvatar } from '../common/UserAvatar.tsx';
 
@@ -29,7 +31,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   isCollapsed,
   onToggleCollapse,
 }) => {
-  const { user, isAdmin, teamsLeading } = useAuth();
+  const { user, isAdmin, isViewer, teamsLeading } = useAuth();
   const isLeader = teamsLeading.length > 0;
 
   // Base navigation items
@@ -44,13 +46,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
       id: 'my-team-member',
       label: 'My Team (Member)',
       icon: Users2,
-      hidden: isAdmin && !isLeader,
+      hidden: isViewer || (isAdmin && !isLeader),
     },
     {
       id: 'my-team-leader',
       label: 'Team Leadership',
       icon: UserCog,
-      hidden: !isLeader && !isAdmin,
+      hidden: isViewer || (!isLeader && !isAdmin),
       badge: 'Lead',
     },
     {
@@ -134,11 +136,38 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 currentPage === 'dashboard' ? 'text-white' : 'text-slate-400 group-hover:text-emerald-400'
               }`}
             />
-            {!isCollapsed && <span>Dashboard Overview</span>}
+            {!isCollapsed && <span>{isViewer ? 'Operations Console' : 'Dashboard Overview'}</span>}
           </button>
 
-          {/* ADMIN EXCLUSIVE: Workflows & Achievements Dual View */}
-          {isAdmin && (
+          {/* DEDICATED VIEWER ANALYST CONSOLE */}
+          {isViewer && (
+            <button
+              onClick={() => onNavigate('viewer-analytics')}
+              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold tracking-tight transition-all duration-200 group cursor-pointer border relative overflow-hidden ${
+                currentPage === 'viewer-analytics' || currentPage === 'analytics'
+                  ? 'bg-gradient-to-r from-cyan-600 to-blue-600 text-white shadow-lg shadow-cyan-600/30 border-cyan-400'
+                  : 'bg-cyan-500/10 text-cyan-300 border-cyan-500/20 hover:bg-cyan-500/20 hover:text-cyan-200 hover:translate-x-1'
+              }`}
+              title="Operations, Squads & Claims Analysis"
+            >
+              <BarChart3
+                className={`h-4 w-4 shrink-0 transition-transform duration-200 group-hover:scale-110 ${
+                  currentPage === 'viewer-analytics' || currentPage === 'analytics' ? 'text-white' : 'text-cyan-400'
+                }`}
+              />
+              {!isCollapsed && (
+                <div className="flex-1 flex items-center justify-between truncate">
+                  <span className="truncate">Operations & Claims</span>
+                  <span className="text-[9px] px-1.5 py-0.5 rounded font-mono font-bold uppercase bg-cyan-400/20 text-cyan-200">
+                    Audit
+                  </span>
+                </div>
+              )}
+            </button>
+          )}
+
+          {/* Workflows & Achievements Dual View (Admin & Viewer) */}
+          {(isAdmin || isViewer) && (
             <button
               onClick={() => onNavigate('admin-workflows-achievements')}
               className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold tracking-tight transition-all duration-200 group cursor-pointer border relative overflow-hidden ${
@@ -164,12 +193,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
             </button>
           )}
 
-          {/* Admin Section Divider */}
-          {isAdmin && (
+          {/* Admin & Analyst Governance Section */}
+          {(isAdmin || isViewer) && (
             <div className="pt-2">
               {!isCollapsed && (
                 <div className="px-3 pb-1 text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400">
-                  Governance
+                  {isViewer ? 'Intelligence & Directory' : 'Governance'}
                 </div>
               )}
               <button
@@ -179,10 +208,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     ? 'bg-white/15 text-white font-semibold'
                     : 'text-slate-300 hover:text-white hover:bg-white/10 hover:translate-x-1'
                 }`}
-                title="Manage Teams"
+                title="Squad Registry"
               >
                 <Users2 className="h-4 w-4 shrink-0 text-slate-400 group-hover:text-emerald-400" />
-                {!isCollapsed && <span>Manage Teams</span>}
+                {!isCollapsed && <span>Squad Registry</span>}
               </button>
               <button
                 onClick={() => onNavigate('manage-users')}

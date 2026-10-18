@@ -301,7 +301,7 @@ export const VECTOR_AVATAR_PRESETS: VectorAvatarOption[] = [
   {
     id: 'vector:emp_1',
     name: 'Alex Chen',
-    roleHint: 'Lead - Team Rock (Infrastructure)',
+    roleHint: 'Lead - Team Rock & Nexus',
     category: 'Engineering',
     accentColor: '#06b6d4',
     svgDataUri: svgToDataUri(
@@ -406,7 +406,7 @@ export const VECTOR_AVATAR_PRESETS: VectorAvatarOption[] = [
   {
     id: 'vector:emp_6',
     name: 'David Kim',
-    roleHint: 'Lead - Team Paper (Product)',
+    roleHint: 'Lead - Team Paper & Alpha',
     category: 'Management',
     accentColor: '#3b82f6',
     svgDataUri: svgToDataUri(
@@ -511,7 +511,7 @@ export const VECTOR_AVATAR_PRESETS: VectorAvatarOption[] = [
   {
     id: 'vector:emp_11',
     name: 'Emily Zhao',
-    roleHint: 'Lead - Team Nexus (Security)',
+    roleHint: 'Staff Security Engineer - Team Nexus',
     category: 'Cybersecurity',
     accentColor: '#10b981',
     svgDataUri: svgToDataUri(
@@ -616,7 +616,7 @@ export const VECTOR_AVATAR_PRESETS: VectorAvatarOption[] = [
   {
     id: 'vector:emp_16',
     name: 'Noah Becker',
-    roleHint: 'Lead - Team Alpha (Intelligence)',
+    roleHint: 'Machine Learning Specialist - Team Alpha',
     category: 'Data',
     accentColor: '#e11d48',
     svgDataUri: svgToDataUri(
@@ -730,7 +730,7 @@ export const REAL_HUMAN_PORTRAIT_PRESETS = [
   {
     id: 'human:emp_1',
     name: 'Alex Chen',
-    roleHint: 'DevOps Principal - Team Rock Lead',
+    roleHint: 'Principal DevOps - Lead: Team Rock & Nexus',
     photoUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&auto=format&fit=crop&q=80',
     gender: 'Male',
   },
@@ -765,7 +765,7 @@ export const REAL_HUMAN_PORTRAIT_PRESETS = [
   {
     id: 'human:emp_6',
     name: 'David Kim',
-    roleHint: 'Lead Fullstack - Team Paper Lead',
+    roleHint: 'Lead Fullstack - Lead: Team Paper & Alpha',
     photoUrl: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=300&auto=format&fit=crop&q=80',
     gender: 'Male',
   },
@@ -800,7 +800,7 @@ export const REAL_HUMAN_PORTRAIT_PRESETS = [
   {
     id: 'human:emp_11',
     name: 'Emily Zhao',
-    roleHint: 'Staff Security Engineer - Team Nexus Lead',
+    roleHint: 'Staff Security Engineer - Team Nexus',
     photoUrl: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300&auto=format&fit=crop&q=80',
     gender: 'Female',
   },
@@ -835,7 +835,7 @@ export const REAL_HUMAN_PORTRAIT_PRESETS = [
   {
     id: 'human:emp_16',
     name: 'Noah Becker',
-    roleHint: 'Machine Learning Lead - Team Alpha Lead',
+    roleHint: 'Machine Learning Specialist - Team Alpha',
     photoUrl: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=300&auto=format&fit=crop&q=80',
     gender: 'Male',
   },
@@ -934,6 +934,21 @@ export const REAL_HUMAN_PHOTO_MAP: Record<string, string> = {
   'usr-emp-20': 'https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?w=300&auto=format&fit=crop&q=80',
   'employ20@gmail.com': 'https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?w=300&auto=format&fit=crop&q=80',
   'benjamin scott': 'https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?w=300&auto=format&fit=crop&q=80',
+  'usr-analyst-1': 'https://images.unsplash.com/photo-1573496799652-408c2ac9fe98?w=300&auto=format&fit=crop&q=80',
+  'analyst1@gmail.com': 'https://images.unsplash.com/photo-1573496799652-408c2ac9fe98?w=300&auto=format&fit=crop&q=80',
+  'sophia martinez': 'https://images.unsplash.com/photo-1573496799652-408c2ac9fe98?w=300&auto=format&fit=crop&q=80',
+  'usr-analyst-2': 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=300&auto=format&fit=crop&q=80',
+  'analyst2@gmail.com': 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=300&auto=format&fit=crop&q=80',
+  'daniel cooper': 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=300&auto=format&fit=crop&q=80',
+  'usr-analyst-3': 'https://images.unsplash.com/photo-1580894732444-8ecded7900cd?w=300&auto=format&fit=crop&q=80',
+  'analyst3@gmail.com': 'https://images.unsplash.com/photo-1580894732444-8ecded7900cd?w=300&auto=format&fit=crop&q=80',
+  'fatima al-mansoor': 'https://images.unsplash.com/photo-1580894732444-8ecded7900cd?w=300&auto=format&fit=crop&q=80',
+  'usr-analyst-4': 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=300&auto=format&fit=crop&q=80',
+  'analyst4@gmail.com': 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=300&auto=format&fit=crop&q=80',
+  'rohan verma': 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=300&auto=format&fit=crop&q=80',
+  'usr-analyst-5': 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=300&auto=format&fit=crop&q=80',
+  'analyst5@gmail.com': 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=300&auto=format&fit=crop&q=80',
+  'zoe andersson': 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=300&auto=format&fit=crop&q=80',
 };
 
 export function getDeterministicHumanPhoto(seedString: string): string {

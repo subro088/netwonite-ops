@@ -271,7 +271,7 @@ export const UserGuideModal: React.FC<UserGuideModalProps> = ({
                 <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
                   <div>
                     <span className="font-bold text-slate-800">employ1@gmail.com</span>
-                    <p className="text-[10px] text-slate-500">Alex Chen (Lead: Team Rock)</p>
+                    <p className="text-[10px] text-slate-500">Alex Chen (Lead: Team Rock & Nexus)</p>
                   </div>
                   <button
                     onClick={async () => {
@@ -286,7 +286,7 @@ export const UserGuideModal: React.FC<UserGuideModalProps> = ({
                 <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
                   <div>
                     <span className="font-bold text-slate-800">employ6@gmail.com</span>
-                    <p className="text-[10px] text-slate-500">David Kim (Lead: Team Paper)</p>
+                    <p className="text-[10px] text-slate-500">David Kim (Lead: Team Paper & Alpha)</p>
                   </div>
                   <button
                     onClick={async () => {

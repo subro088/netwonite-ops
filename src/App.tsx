@@ -18,6 +18,7 @@ import { CompletedWorkPage } from './pages/CompletedWorkPage.tsx';
 import { HighPriorityPage } from './pages/HighPriorityPage.tsx';
 import { UserProfilePage } from './pages/UserProfilePage.tsx';
 import { AdminWorkflowsAchievementsPage } from './pages/AdminWorkflowsAchievementsPage.tsx';
+import { ViewerAnalyticsPage } from './pages/ViewerAnalyticsPage.tsx';
 import { UserGuideModal } from './components/guide/UserGuideModal.tsx';
 
 const queryClient = new QueryClient({
@@ -30,7 +31,7 @@ const queryClient = new QueryClient({
 });
 
 function MainApp() {
-  const { user, isLoading, isAdmin } = useAuth();
+  const { user, isLoading, isAdmin, isViewer } = useAuth();
   const [currentPage, setCurrentPage] = useState<string>('dashboard');
   const [navParams, setNavParams] = useState<any>({});
   const [isGuideOpen, setIsGuideOpen] = useState(false);
@@ -75,11 +76,16 @@ function MainApp() {
   const renderContent = () => {
     switch (currentPage) {
       case 'dashboard':
-        return isAdmin ? (
-          <AdminDashboard onNavigate={handleNavigate} />
-        ) : (
-          <EmployeeDashboard onNavigate={handleNavigate} />
-        );
+        if (isAdmin) {
+          return <AdminDashboard onNavigate={handleNavigate} />;
+        }
+        if (isViewer) {
+          return <ViewerAnalyticsPage onNavigate={handleNavigate} />;
+        }
+        return <EmployeeDashboard onNavigate={handleNavigate} />;
+      case 'viewer-analytics':
+      case 'analytics':
+        return <ViewerAnalyticsPage onNavigate={handleNavigate} />;
       case 'manage-teams':
         return <ManageTeamsPage onNavigate={handleNavigate} />;
       case 'manage-users':
@@ -116,11 +122,13 @@ function MainApp() {
       case 'profile':
         return <UserProfilePage onNavigate={handleNavigate} />;
       default:
-        return isAdmin ? (
-          <AdminDashboard onNavigate={handleNavigate} />
-        ) : (
-          <EmployeeDashboard onNavigate={handleNavigate} />
-        );
+        if (isAdmin) {
+          return <AdminDashboard onNavigate={handleNavigate} />;
+        }
+        if (isViewer) {
+          return <ViewerAnalyticsPage onNavigate={handleNavigate} />;
+        }
+        return <EmployeeDashboard onNavigate={handleNavigate} />;
     }
   };
 

@@ -10,7 +10,7 @@ interface NavbarProps {
 }
 
 export const Navbar: React.FC<NavbarProps> = ({ onNavigate, onOpenGuide }) => {
-  const { user, logout, switchPersona, isAdmin, teamsLeading } = useAuth();
+  const { user, logout, switchPersona, isAdmin, isViewer, teamsLeading } = useAuth();
   const [profileOpen, setProfileOpen] = useState(false);
   const [personaOpen, setPersonaOpen] = useState(false);
   const profileRef = useRef<HTMLDivElement>(null);
@@ -31,15 +31,16 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, onOpenGuide }) => {
 
   const quickPersonas = [
     { email: 'admin@netwonite.com', name: 'System Admin', roleDesc: 'Global Administrator', badge: 'Admin' },
-    { email: 'employ1@gmail.com', name: 'Alex Chen', roleDesc: 'Lead: Team Rock', badge: 'Lead' },
-    { email: 'employ6@gmail.com', name: 'David Kim', roleDesc: 'Lead: Team Paper', badge: 'Lead' },
-    { email: 'employ11@gmail.com', name: 'Emily Zhao', roleDesc: 'Lead: Team Nexus', badge: 'Lead' },
-    { email: 'employ16@gmail.com', name: 'Noah Becker', roleDesc: 'Lead: Team Alpha', badge: 'Lead' },
+    { email: 'analyst1@gmail.com', name: 'Sophia Martinez', roleDesc: 'Lead Operations Analyst', badge: 'Analyst' },
+    { email: 'employ1@gmail.com', name: 'Alex Chen', roleDesc: 'Lead: Team Rock & Nexus', badge: 'Lead' },
+    { email: 'employ6@gmail.com', name: 'David Kim', roleDesc: 'Lead: Team Paper & Alpha', badge: 'Lead' },
     { email: 'employ2@gmail.com', name: 'Jordan Taylor', roleDesc: 'Member: Team Rock & Nexus', badge: 'Member' },
+    { email: 'employ11@gmail.com', name: 'Emily Zhao', roleDesc: 'Member: Team Nexus', badge: 'Member' },
+    { email: 'employ16@gmail.com', name: 'Noah Becker', roleDesc: 'Member: Team Alpha', badge: 'Member' },
     { email: 'employ7@gmail.com', name: 'Priya Patel', roleDesc: 'Member: Team Paper', badge: 'Member' },
   ];
 
-  const roleLabel = isAdmin ? 'Admin' : teamsLeading.length > 0 ? 'Lead' : 'Member';
+  const roleLabel = isAdmin ? 'Admin' : isViewer ? 'Analyst' : teamsLeading.length > 0 ? 'Lead' : 'Member';
 
   return (
     <header className="sticky top-0 z-30 h-16 w-full backdrop-blur-xl bg-white/80 border-b border-white/60 px-4 sm:px-6 flex items-center justify-between shadow-xs">

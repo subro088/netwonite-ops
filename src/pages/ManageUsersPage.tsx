@@ -21,7 +21,7 @@ export const ManageUsersPage: React.FC<ManageUsersPageProps> = ({ onNavigate: _o
   const [users, setUsers] = useState<EnrichedUser[]>([]);
   const [search, setSearch] = useState('');
   const [isLoading, setIsLoading] = useState(true);
-  const [roleFilter, setRoleFilter] = useState<'all' | 'admin' | 'leader' | 'member'>('all');
+  const [roleFilter, setRoleFilter] = useState<'all' | 'admin' | 'leader' | 'member' | 'viewer'>('all');
 
   const fetchUsers = async () => {
     setIsLoading(true);
@@ -48,6 +48,7 @@ export const ManageUsersPage: React.FC<ManageUsersPageProps> = ({ onNavigate: _o
 
     if (!matchesSearch) return false;
     if (roleFilter === 'admin') return u.role === 'admin';
+    if (roleFilter === 'viewer') return u.role === 'viewer';
     if (roleFilter === 'leader') return u.isLeader;
     if (roleFilter === 'member') return !u.isLeader && u.role === 'employee';
     return true;
@@ -62,11 +63,11 @@ export const ManageUsersPage: React.FC<ManageUsersPageProps> = ({ onNavigate: _o
             <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wider uppercase bg-teal-100 text-teal-800 border border-teal-200">
               Identity & Directory
             </span>
-            <span className="text-xs text-slate-400">20 Employees + 1 Administrator</span>
+            <span className="text-xs text-slate-400">20 Employees + 1 Administrator + 5 Dedicated Analysts</span>
           </div>
           <h1 className="text-2xl font-bold tracking-tight text-slate-900">Manage Users & Personas</h1>
           <p className="text-xs text-slate-500 mt-0.5">
-            Audit team assignments, view leadership roles, and switch testing personas in real-time.
+            Audit team assignments, view leadership roles, inspect viewer analysts, and switch personas in real-time.
           </p>
         </div>
 
@@ -119,11 +120,21 @@ export const ManageUsersPage: React.FC<ManageUsersPageProps> = ({ onNavigate: _o
           onClick={() => setRoleFilter('member')}
           className={`px-3 py-1.5 rounded-xl font-bold transition-all cursor-pointer ${
             roleFilter === 'member'
-              ? 'bg-cyan-700 text-white shadow-xs'
+              ? 'bg-slate-700 text-white shadow-xs'
               : 'bg-white/80 text-slate-600 hover:bg-white border border-slate-200'
           }`}
         >
           Team Members ({users.filter(u => !u.isLeader && u.role === 'employee').length})
+        </button>
+        <button
+          onClick={() => setRoleFilter('viewer')}
+          className={`px-3 py-1.5 rounded-xl font-bold transition-all cursor-pointer ${
+            roleFilter === 'viewer'
+              ? 'bg-cyan-700 text-white shadow-xs'
+              : 'bg-cyan-50 text-cyan-800 hover:bg-cyan-100 border border-cyan-200'
+          }`}
+        >
+          Dedicated Analysts ({users.filter(u => u.role === 'viewer').length})
         </button>
       </div>
 
@@ -140,6 +151,8 @@ export const ManageUsersPage: React.FC<ManageUsersPageProps> = ({ onNavigate: _o
                 className={`p-5 rounded-3xl backdrop-blur-xl border transition-all flex flex-col justify-between group ${
                   isSelf
                     ? 'bg-emerald-50/60 border-emerald-300 ring-2 ring-emerald-500/20'
+                    : u.role === 'viewer'
+                    ? 'bg-cyan-50/40 border-cyan-200/80 hover:border-cyan-400 shadow-xs hover:shadow-md'
                     : 'bg-white/85 border-white/70 hover:border-slate-300 shadow-xs hover:shadow-md'
                 }`}
               >
@@ -149,7 +162,7 @@ export const ManageUsersPage: React.FC<ManageUsersPageProps> = ({ onNavigate: _o
                       <UserAvatar
                         src={u.avatar}
                         name={u.name}
-                        role={u.role === 'admin' ? 'admin' : u.isLeader ? 'leader' : 'employee'}
+                        role={u.role === 'admin' ? 'admin' : u.role === 'viewer' ? 'employee' : u.isLeader ? 'leader' : 'employee'}
                         size="md"
                         showVectorBadge={true}
                         hoverEffect={true}
@@ -170,6 +183,10 @@ export const ManageUsersPage: React.FC<ManageUsersPageProps> = ({ onNavigate: _o
                       <span className="px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider bg-purple-100 text-purple-800 border border-purple-200">
                         Admin
                       </span>
+                    ) : u.role === 'viewer' ? (
+                      <span className="px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider bg-cyan-100 text-cyan-900 border border-cyan-300">
+                        Analyst • Dedicated
+                      </span>
                     ) : u.isLeader ? (
                       <span className="px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider bg-teal-100 text-teal-800 border border-teal-200">
                         Leader
@@ -182,6 +199,12 @@ export const ManageUsersPage: React.FC<ManageUsersPageProps> = ({ onNavigate: _o
                   </div>
                   <p className="text-xs font-semibold text-slate-700 mb-1">{u.title || 'Engineer'}</p>
                   <p className="text-[11px] text-slate-400 mb-3">{u.department || 'Operations'}</p>
+
+                  {u.role === 'viewer' && (
+                    <div className="mb-3 p-2 rounded-xl bg-cyan-100/60 border border-cyan-200 text-cyan-900 text-[11px] font-medium leading-relaxed">
+                      <span className="font-bold">System Role:</span> Dedicated claims & workflow intelligence analyst. Cannot be modified or deleted by Admin.
+                    </div>
+                  )}
 
                   <div className="space-y-1.5 mb-3 text-xs">
                     {u.teamsLeading.length > 0 && (
