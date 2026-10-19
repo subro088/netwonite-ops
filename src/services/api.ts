@@ -13,28 +13,65 @@ import {
 const TOKEN_KEY = 'netwonite_token';
 const USER_KEY = 'netwonite_user';
 
+// Automatically purge legacy tokens stored in localStorage from earlier builds
+// This ensures that clicking deployment links (e.g. Render) always starts at the Login page
+try {
+  if (typeof window !== 'undefined' && window.localStorage) {
+    window.localStorage.removeItem(TOKEN_KEY);
+    window.localStorage.removeItem(USER_KEY);
+  }
+} catch {
+  // ignore
+}
+
 export const storage = {
   getToken(): string | null {
-    return localStorage.getItem(TOKEN_KEY);
+    try {
+      if (typeof window === 'undefined') return null;
+      return window.sessionStorage.getItem(TOKEN_KEY);
+    } catch {
+      return null;
+    }
   },
   setToken(token: string) {
-    localStorage.setItem(TOKEN_KEY, token);
+    try {
+      if (typeof window !== 'undefined') {
+        window.sessionStorage.setItem(TOKEN_KEY, token);
+      }
+    } catch {
+      // ignore
+    }
   },
   getUser(): User | null {
-    const raw = localStorage.getItem(USER_KEY);
-    if (!raw) return null;
     try {
+      if (typeof window === 'undefined') return null;
+      const raw = window.sessionStorage.getItem(USER_KEY);
+      if (!raw) return null;
       return JSON.parse(raw);
     } catch {
       return null;
     }
   },
   setUser(user: User) {
-    localStorage.setItem(USER_KEY, JSON.stringify(user));
+    try {
+      if (typeof window !== 'undefined') {
+        window.sessionStorage.setItem(USER_KEY, JSON.stringify(user));
+      }
+    } catch {
+      // ignore
+    }
   },
   clear() {
-    localStorage.removeItem(TOKEN_KEY);
-    localStorage.removeItem(USER_KEY);
+    try {
+      if (typeof window !== 'undefined') {
+        window.sessionStorage.removeItem(TOKEN_KEY);
+        window.sessionStorage.removeItem(USER_KEY);
+        window.localStorage.removeItem(TOKEN_KEY);
+        window.localStorage.removeItem(USER_KEY);
+      }
+    } catch {
+      // ignore
+    }
   },
 };
 

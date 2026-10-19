@@ -28,6 +28,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const refreshMe = useCallback(async () => {
+    // If URL contains ?logout, ?login, or #login, force a fresh session
+    if (typeof window !== 'undefined') {
+      const search = window.location.search;
+      const hash = window.location.hash;
+      if (search.includes('logout') || search.includes('login') || hash === '#login') {
+        storage.clear();
+        setUser(null);
+        setToken(null);
+        setTeamsLeading([]);
+        setTeamsMemberOf([]);
+        setIsLoading(false);
+        return;
+      }
+    }
+
     const curToken = storage.getToken();
     if (!curToken) {
       setUser(null);
