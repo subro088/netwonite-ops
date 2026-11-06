@@ -5,6 +5,7 @@ import { Task } from '../types/index.ts';
 import { TaskCard } from '../components/tasks/TaskCard.tsx';
 import { CreateTaskModal } from '../components/tasks/CreateTaskModal.tsx';
 import { UserAvatar } from '../components/common/UserAvatar.tsx';
+import { TaskCompletionDonutWidget } from '../components/dashboard/TaskCompletionDonutWidget.tsx';
 import {
   Users2,
   Clock,
@@ -23,6 +24,7 @@ export const EmployeeDashboard: React.FC<EmployeeDashboardProps> = ({ onNavigate
   const { user, teamsLeading, teamsMemberOf } = useAuth();
   const [activeTab, setActiveTab] = useState<'assigned' | 'priority' | 'approvals' | 'ongoing' | 'completed' | 'all'>('assigned');
   const [tasks, setTasks] = useState<Task[]>([]);
+  const [analyticsTasks, setAnalyticsTasks] = useState<Task[]>([]);
   const [search, setSearch] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [isCreateOpen, setIsCreateOpen] = useState(false);
@@ -47,12 +49,16 @@ export const EmployeeDashboard: React.FC<EmployeeDashboardProps> = ({ onNavigate
   const fetchDashboardData = async () => {
     setIsLoading(true);
     try {
-      const data = await api.getTasks({
-        filter: activeTab === 'all' ? undefined : activeTab,
-        limit: 60,
-      });
+      const [data, allData] = await Promise.all([
+        api.getTasks({
+          filter: activeTab === 'all' ? undefined : activeTab,
+          limit: 60,
+        }),
+        api.getTasks({ limit: 100 }),
+      ]);
       setCounts(data.counts);
       setTasks(data.tasks);
+      setAnalyticsTasks(allData.tasks);
     } catch (err: any) {
       console.error('Error fetching employee dashboard:', err);
     } finally {
@@ -202,8 +208,21 @@ export const EmployeeDashboard: React.FC<EmployeeDashboardProps> = ({ onNavigate
         </div>
       </div>
 
+      {/* Summary Analytics Dashboard Widget: Task Completion Rates Donut Chart */}
+      <TaskCompletionDonutWidget
+        tasks={analyticsTasks.length > 0 ? analyticsTasks : tasks}
+        counts={counts}
+        currentUserId={user?.id}
+        onNavigate={onNavigate}
+        onFilterTab={(tab) => {
+          setActiveTab(tab);
+          const el = document.getElementById('tasks-section-anchor');
+          if (el) el.scrollIntoView({ behavior: 'smooth' });
+        }}
+      />
+
       {/* Filter Segmented Controls & Search Toolbar */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 pt-2">
+      <div id="tasks-section-anchor" className="flex flex-col md:flex-row md:items-center justify-between gap-3 pt-2">
         <div className="p-1 rounded-2xl bg-slate-200/70 border border-slate-300/40 backdrop-blur-xl flex items-center gap-1 overflow-x-auto shadow-inner">
           <button
             onClick={() => setActiveTab('assigned')}

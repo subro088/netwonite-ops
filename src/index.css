@@ -273,3 +273,197 @@
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(100, 116, 139, 0.6);
 }
+
+/* ==========================================================================
+   Newtonite N° Orbital Core & 3D Spheres Animation System
+   ========================================================================== */
+
+/* Floating core levitation with gentle 3D tilt */
+@keyframes coreLevitation {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg) scale(1);
+  }
+  50% {
+    transform: translateY(-8px) rotate(1.2deg) scale(1.015);
+  }
+}
+
+.animate-core-levitate {
+  animation: coreLevitation 7s ease-in-out infinite;
+}
+
+/* Floating interactive popups around core */
+@keyframes floatPopup1 {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px);
+  }
+  50% {
+    transform: translateY(-7px) translateX(3px);
+  }
+}
+
+@keyframes floatPopup2 {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px);
+  }
+  50% {
+    transform: translateY(6px) translateX(-4px);
+  }
+}
+
+@keyframes floatPopup3 {
+  0%, 100% {
+    transform: translateY(0px) scale(1);
+  }
+  50% {
+    transform: translateY(-5px) scale(1.03);
+  }
+}
+
+.animate-float-popup-1 {
+  animation: floatPopup1 5.5s ease-in-out infinite;
+}
+
+.animate-float-popup-2 {
+  animation: floatPopup2 6.8s ease-in-out infinite;
+}
+
+.animate-float-popup-3 {
+  animation: floatPopup3 7.5s ease-in-out infinite;
+}
+
+/* Radar pulse wave */
+@keyframes radarPing {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.9;
+  }
+  70% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+
+.animate-radar-ping {
+  animation: radarPing 2.4s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+/* Spherical 3D Balls with specular highlights */
+.sphere-ball-blue {
+  background: radial-gradient(circle at 35% 32%, #bfdbfe 0%, #60a5fa 28%, #2563eb 68%, #1e3a8a 100%);
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.55), 0 0 10px rgba(96, 165, 250, 0.45), inset -2px -2px 4px rgba(15, 23, 42, 0.6), inset 2px 2px 4px rgba(255, 255, 255, 0.85);
+}
+
+.sphere-ball-black {
+  background: radial-gradient(circle at 35% 32%, #94a3b8 0%, #334155 32%, #0f172a 75%, #020617 100%);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.65), 0 0 8px rgba(30, 41, 59, 0.5), inset -2px -2px 4px rgba(0, 0, 0, 0.9), inset 2px 2px 4px rgba(255, 255, 255, 0.6);
+}
+
+.sphere-ball-silver {
+  background: radial-gradient(circle at 35% 32%, #ffffff 0%, #cbd5e1 35%, #64748b 75%, #334155 100%);
+  box-shadow: 0 3px 10px rgba(100, 116, 139, 0.45), inset -2px -2px 3px rgba(15, 23, 42, 0.5), inset 2px 2px 4px rgba(255, 255, 255, 0.95);
+}
+
+.sphere-ball-cyan {
+  background: radial-gradient(circle at 35% 32%, #cffafe 0%, #38bdf8 35%, #0284c7 75%, #075985 100%);
+  box-shadow: 0 0 16px rgba(56, 189, 248, 0.75), inset -2px -2px 4px rgba(15, 23, 42, 0.5), inset 2px 2px 4px rgba(255, 255, 255, 0.9);
+}
+
+/* Glass Floating Popups */
+.glass-popup-card {
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.12), 0 4px 12px rgba(0, 0, 0, 0.05), inset 0 1px 1px rgba(255, 255, 255, 1);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-popup-card:hover {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(255, 255, 255, 1);
+  box-shadow: 0 16px 36px -6px rgba(0, 0, 0, 0.18), 0 0 20px rgba(255, 255, 255, 0.8), inset 0 1px 1px rgba(255, 255, 255, 1);
+  transform: translateY(-3px) scale(1.03);
+}
+
+.glass-popup-dark {
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.45), 0 0 15px rgba(6, 182, 212, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-popup-dark:hover {
+  background: rgba(15, 23, 42, 0.95);
+  border-color: rgba(6, 182, 212, 0.6);
+  box-shadow: 0 16px 36px -6px rgba(0, 0, 0, 0.6), 0 0 24px rgba(6, 182, 212, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+  transform: translateY(-3px) scale(1.03);
+}
+
+/* Ambient Slow Rotation */
+@keyframes spinSlow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spinSlow 35s linear infinite;
+}
+
+.animate-spin-reverse-slow {
+  animation: spinSlow 45s linear infinite reverse;
+}
+
+/* Newton's Cradle Pendulum Keyframes */
+@keyframes cradleLeftBall {
+  0% {
+    transform: rotate(0deg);
+    animation-timing-function: cubic-bezier(0.2, 0.8, 0.4, 1);
+  }
+  24% {
+    transform: rotate(-36deg);
+    animation-timing-function: cubic-bezier(0.6, 0, 0.8, 0.2);
+  }
+  48% {
+    transform: rotate(0deg);
+    animation-timing-function: linear;
+  }
+  100% {
+    transform: rotate(0deg);
+    animation-timing-function: linear;
+  }
+}
+
+@keyframes cradleRightBall {
+  0% {
+    transform: rotate(0deg);
+    animation-timing-function: linear;
+  }
+  50% {
+    transform: rotate(0deg);
+    animation-timing-function: cubic-bezier(0.2, 0.8, 0.4, 1);
+  }
+  74% {
+    transform: rotate(36deg);
+    animation-timing-function: cubic-bezier(0.6, 0, 0.8, 0.2);
+  }
+  98% {
+    transform: rotate(0deg);
+    animation-timing-function: linear;
+  }
+  100% {
+    transform: rotate(0deg);
+    animation-timing-function: linear;
+  }
+}
+
