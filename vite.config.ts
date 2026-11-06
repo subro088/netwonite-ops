@@ -16,6 +16,9 @@ export default defineConfig(() => {
         '@': path.resolve(currentDir, '.'),
       },
     },
+    optimizeDeps: {
+      include: ['react-is', 'recharts'],
+    },
     server: {
       // HMR is disabled in AI Studio via DISABLE_HMR env var.
       hmr: process.env.DISABLE_HMR !== 'true',

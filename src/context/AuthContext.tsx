@@ -73,7 +73,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     refreshMe();
   }, [refreshMe]);
 
-  const login = async (email: string, password = '123456') => {
+  const login = async (email: string, password = 'Newtonite@Secure99') => {
     setIsLoading(true);
     try {
       const data = await api.login(email, password);
@@ -89,7 +89,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const switchPersona = async (email: string) => {
-    await login(email, '123456');
+    await login(email, 'Newtonite@Secure99');
   };
 
   const logout = () => {

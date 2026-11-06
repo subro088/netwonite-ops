@@ -97,7 +97,7 @@ async function request<T>(endpoint: string, options: RequestInit = {}): Promise<
 
 export const api = {
   // Auth
-  async login(email: string, password = '123456') {
+  async login(email: string, password = 'Newtonite@Secure99') {
     return request<{ user: User; token: string; teamsLeading: Team[]; teamsMemberOf: Team[] }>(
       '/api/auth/login',
       {

@@ -11,8 +11,8 @@ import {
   AssignmentMethod,
 } from '../types/index.ts';
 
-// Precomputed bcrypt hash for password '123456'
-const HASHED_PASSWORD_123456 = bcrypt.hashSync('123456', 8);
+// Precomputed bcrypt hash for unbreached demo password 'Newtonite@Secure99'
+const HASHED_PASSWORD_DEMO = bcrypt.hashSync('Newtonite@Secure99', 8);
 
 const EMPLOYEE_NAMES = [
   { name: 'Alex Chen', dept: 'Infrastructure', title: 'Principal DevOps Engineer' },
@@ -64,7 +64,7 @@ class NetwoniteDatabase {
       department: 'Executive Operations',
       title: 'Global Administrator',
       createdAt: '2026-01-01T08:00:00.000Z',
-      passwordHash: HASHED_PASSWORD_123456,
+      passwordHash: HASHED_PASSWORD_DEMO,
       customBadges: [],
     };
 
@@ -105,7 +105,7 @@ class NetwoniteDatabase {
         department: info.dept,
         title: info.title,
         createdAt: '2026-01-05T09:00:00.000Z',
-        passwordHash: HASHED_PASSWORD_123456,
+        passwordHash: HASHED_PASSWORD_DEMO,
         customBadges: i === 2 ? [
           {
             id: 'bdg-initial-1',
@@ -130,7 +130,7 @@ class NetwoniteDatabase {
         department: 'Operations Intelligence',
         title: 'Lead Operations Analyst',
         createdAt: '2026-01-02T08:00:00.000Z',
-        passwordHash: HASHED_PASSWORD_123456,
+        passwordHash: HASHED_PASSWORD_DEMO,
         customBadges: [],
       },
       {
@@ -142,7 +142,7 @@ class NetwoniteDatabase {
         department: 'Workflow Audit',
         title: 'Workflow Intelligence Analyst',
         createdAt: '2026-01-02T08:30:00.000Z',
-        passwordHash: HASHED_PASSWORD_123456,
+        passwordHash: HASHED_PASSWORD_DEMO,
         customBadges: [],
       },
       {
@@ -154,7 +154,7 @@ class NetwoniteDatabase {
         department: 'Governance & Compliance',
         title: 'Compliance & Audit Analyst',
         createdAt: '2026-01-02T09:00:00.000Z',
-        passwordHash: HASHED_PASSWORD_123456,
+        passwordHash: HASHED_PASSWORD_DEMO,
         customBadges: [],
       },
       {
@@ -166,7 +166,7 @@ class NetwoniteDatabase {
         department: 'Engineering Velocity',
         title: 'Sprint Velocity Analyst',
         createdAt: '2026-01-02T09:30:00.000Z',
-        passwordHash: HASHED_PASSWORD_123456,
+        passwordHash: HASHED_PASSWORD_DEMO,
         customBadges: [],
       },
       {
@@ -178,7 +178,7 @@ class NetwoniteDatabase {
         department: 'Cross-Team Intelligence',
         title: 'Cross-Team Productivity Analyst',
         createdAt: '2026-01-02T10:00:00.000Z',
-        passwordHash: HASHED_PASSWORD_123456,
+        passwordHash: HASHED_PASSWORD_DEMO,
         customBadges: [],
       },
     ];

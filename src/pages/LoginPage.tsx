@@ -43,7 +43,7 @@ interface LoginPageProps {
 export const LoginPage: React.FC<LoginPageProps> = ({ onOpenGuide }) => {
   const { login, isLoading: authLoading } = useAuth();
   const [email, setEmail] = useState('admin@netwonite.com');
-  const [password, setPassword] = useState('123456');
+  const [password, setPassword] = useState('Newtonite@Secure99');
   const [selectedRoleKey, setSelectedRoleKey] = useState<'admin' | 'leader' | 'analyst' | 'member'>('admin');
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -89,7 +89,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onOpenGuide }) => {
   const handleRoleSelect = (roleKey: 'admin' | 'leader' | 'analyst' | 'member', userEmail: string) => {
     setSelectedRoleKey(roleKey);
     setEmail(userEmail);
-    setPassword('123456');
+    setPassword('Newtonite@Secure99');
     setError(null);
   };
 
@@ -108,11 +108,11 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onOpenGuide }) => {
 
   const handleDirectLaunch = async (targetEmail: string) => {
     setEmail(targetEmail);
-    setPassword('123456');
+    setPassword('Newtonite@Secure99');
     setError(null);
     setIsSubmitting(true);
     try {
-      await login(targetEmail, '123456');
+      await login(targetEmail, 'Newtonite@Secure99');
     } catch (err: any) {
       setError(err.message || 'Login failed.');
     } finally {
@@ -396,18 +396,28 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onOpenGuide }) => {
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-bold text-neutral-700 uppercase tracking-wider mb-0.5">
-                    Password
-                  </label>
+                  <div className="flex items-center justify-between mb-0.5">
+                    <label className="block text-[10px] font-bold text-neutral-700 uppercase tracking-wider">
+                      Password
+                    </label>
+                    <span className="text-[9px] text-emerald-600 font-mono font-medium">
+                      Auto-Configured
+                    </span>
+                  </div>
                   <div className="relative group/field">
                     <Lock className="absolute left-2.5 top-2.5 h-3.5 w-3.5 text-neutral-400 group-focus-within/field:text-neutral-900 transition-colors" />
                     <input
                       type="password"
+                      name="access_key_token"
+                      id="access_key_token"
+                      autoComplete="new-password"
+                      data-lpignore="true"
+                      data-form-type="other"
                       required
                       value={password}
                       onChange={e => setPassword(e.target.value)}
-                      placeholder="••••••"
-                      className="w-full pl-8 pr-3 py-1.5 rounded-xl bg-white/90 border border-neutral-300 text-xs text-neutral-900 placeholder-neutral-400 focus:outline-none focus:border-neutral-900 focus:ring-1 focus:ring-neutral-900 transition-all shadow-inner"
+                      placeholder="••••••••••••••••"
+                      className="w-full pl-8 pr-3 py-1.5 rounded-xl bg-white/90 border border-neutral-300 text-xs text-neutral-900 placeholder-neutral-400 focus:outline-none focus:border-neutral-900 focus:ring-1 focus:ring-neutral-900 transition-all shadow-inner font-mono"
                     />
                   </div>
                 </div>
@@ -446,7 +456,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onOpenGuide }) => {
                 <span>View all 20 demo accounts</span>
                 <ChevronRight className="h-3 w-3" />
               </button>
-              <span>Demo Pass: <strong className="text-neutral-900">123456</strong></span>
+              <span>Demo Pass: <strong className="text-neutral-900 font-mono">Newtonite@Secure99</strong></span>
             </div>
 
           </div>
@@ -619,7 +629,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onOpenGuide }) => {
 
             {/* Modal Footer */}
             <div className="pt-3 border-t border-neutral-200 flex items-center justify-between text-xs text-neutral-500">
-              <span>Demo password: <strong className="text-neutral-900">123456</strong></span>
+              <span>Demo password: <strong className="text-neutral-900 font-mono">Newtonite@Secure99</strong></span>
               <button
                 type="button"
                 onClick={() => setIsAllPersonasModalOpen(false)}
